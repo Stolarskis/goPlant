@@ -52,13 +52,11 @@ func createTables(db *sql.DB) {
 
 	cT := "CREATE TABLE goplant.%s (id serial NOT NULL, value int4 NOT NULL, createdate date NULL DEFAULT CURRENT_DATE, recordtime date NULL, CONSTRAINT %s_pk PRIMARY KEY (id));"
 
-	fmt.Println("asdfasdfas")
 	for _, t := range tNames {
 		q := fmt.Sprintf(isExists, "table", "tables", "table", t)
 		if !checkIfExists(db, q) {
 			fmt.Println("Creating table: ", t)
 			s := fmt.Sprintf(cT, t, t)
-			fmt.Println(s)
 			_, err := db.Exec(s)
 			if err != nil {
 				log.Fatal(err)
