@@ -4,12 +4,18 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/stolarskis/goPlant/pkg/transport"
 	"goji.io"
 	"goji.io/pat"
 )
+
+type ServerConfig struct {
+	Host string
+	Port string
+}
+
+var ServerStg ServerConfig
 
 func NewHTTP(m *goji.Mux) {
 
@@ -21,9 +27,13 @@ func NewHTTP(m *goji.Mux) {
 }
 
 func Start(m *goji.Mux) {
-	h := os.Getenv("GOPLANT_HOST")
-	p := os.Getenv("GOPLANT_PORT")
-	err := http.ListenAndServe(fmt.Sprintf("%s:%s", h, p), m)
+
+	if (ServerStg == ServerConfig{}) {
+		log.Fatal("Server settings have not been initialized.")
+	}
+
+	fmt.Println(ServerStg.Host, ServerStg.Port)
+	err := http.ListenAndServe(fmt.Sprintf("%s:%s", ServerStg.Host, ServerStg.Port), m)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/spf13/viper"
 	"github.com/stolarskis/goPlant/utl/db"
+	"github.com/stolarskis/goPlant/utl/server"
 
 	_ "github.com/lib/pq"
 )
@@ -16,6 +18,22 @@ const sname = "goPlant"
 const isExists = "SELECT EXISTS(SELECT %s_name FROM information_schema.%s WHERE %s_name = '%s');"
 
 func main() {
+
+	viper.AddConfigPath("./")
+	viper.SetConfigName("config")
+	viper.SetConfigType("yaml")
+
+	dbC := db.DbConfig{}
+	sC := server.ServerConfig{}
+
+	err := viper.ReadInConfig()
+	if err != nil {
+		log.Fatal("Failed to read config file")
+	}
+	viper.UnmarshalKey("db", &dbC)
+	viper.UnmarshalKey("server", &sC)
+
+	db.DbStg = dbC
 
 	db, err := db.New()
 	if err != nil {
