@@ -4,35 +4,27 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"os"
+
+	"github.com/stolarskis/goPlant/utl/db"
 
 	_ "github.com/lib/pq"
 )
 
-var (
-	sName    = "goPlant"
-	tNames   = []string{"moisture", "temperature", "light"}
-	isExists = "SELECT EXISTS(SELECT %s_name FROM information_schema.%s WHERE %s_name = '%s');"
-)
+var tNames = []string{"moisture", "temperature", "light"}
+
+const sname = "goPlant"
+const isExists = "SELECT EXISTS(SELECT %s_name FROM information_schema.%s WHERE %s_name = '%s');"
 
 func main() {
 
-	dbU := os.Getenv("DB_USER")
-	dbP := os.Getenv("DB_PASSWORD")
-	dbN := os.Getenv("DB_NAME")
-
-	if dbU == "" || dbP == "" || dbN == "" {
-		log.Fatal("A database env is not set")
-	}
-
-	connStr := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", dbU, dbP, dbN)
-	db, err := sql.Open("postgres", connStr)
+	db, err := db.New()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	createSchema(db)
 	createTables(db)
+
 }
 
 func createSchema(db *sql.DB) {
@@ -50,7 +42,7 @@ func createSchema(db *sql.DB) {
 
 func createTables(db *sql.DB) {
 
-	cT := "CREATE TABLE goplant.%s (id serial NOT NULL, value int4 NOT NULL, createdate date NULL DEFAULT CURRENT_DATE, recordtime date NULL, CONSTRAINT %s_pk PRIMARY KEY (id));"
+	const cT = "CREATE TABLE goplant.%s (id serial NOT NULL, value int4 NOT NULL, createdate date NULL DEFAULT CURRENT_DATE, recordtime date NULL, CONSTRAINT %s_pk PRIMARY KEY (id));"
 
 	for _, t := range tNames {
 		q := fmt.Sprintf(isExists, "table", "tables", "table", t)
