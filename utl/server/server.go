@@ -2,7 +2,6 @@ package server
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 
@@ -20,11 +19,13 @@ func NewHTTP(m *goji.Mux) {
 	// m.HandleFunc(pat.Post("/data/light"))
 }
 
-func Start(m *goji.Mux) {
+func Start(m *goji.Mux) error {
 	h := os.Getenv("GOPLANT_HOST")
 	p := os.Getenv("GOPLANT_PORT")
 	err := http.ListenAndServe(fmt.Sprintf("%s:%s", h, p), m)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
+
+	return nil
 }

@@ -1,8 +1,9 @@
 package main
 
 import (
-	"log"
+	"os"
 
+	log "github.com/inconshreveable/log15"
 	"github.com/stolarskis/goPlant/pkg/platform/pgsql"
 	"github.com/stolarskis/goPlant/utl/db"
 	"github.com/stolarskis/goPlant/utl/server"
@@ -15,12 +16,16 @@ func main() {
 
 	db, err := db.New()
 	if err != nil {
-		log.Fatal(err)
+		log.Error(err.Error())
+		os.Exit(1)
 	}
 
 	pgsql.DB = db
 	m := goji.NewMux()
 
 	server.NewHTTP(m)
-	server.Start(m)
+	err = server.Start(m)
+	if err != nil {
+		log.Error(err.Error())
+	}
 }

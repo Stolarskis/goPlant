@@ -2,9 +2,10 @@ package transport
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
+
+	log "github.com/inconshreveable/log15"
 
 	"github.com/stolarskis/goPlant/pkg/platform/pgsql"
 
@@ -24,13 +25,13 @@ type DataUploadReq struct {
 func (h Handler) MoistureData(w http.ResponseWriter, r *http.Request) {
 	res, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		fmt.Println("Moisture: Failed to read request body")
+		log.Error("Moisture: Failed to read request body. " + err.Error())
 	}
 
 	dReq := DataUploadReq{}
 	err = json.Unmarshal(res, &dReq)
 	if err != nil {
-		fmt.Println("Moisture: Failed to unmarshal request")
+		log.Error("Moisture: Failed to unmarshal request. " + err.Error())
 	}
 
 	sd := SensorData.SensorData(dReq)

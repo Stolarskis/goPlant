@@ -3,7 +3,9 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"log"
+	"os"
+
+	log "github.com/inconshreveable/log15"
 
 	"github.com/stolarskis/goPlant/utl/db"
 
@@ -19,7 +21,8 @@ func main() {
 
 	db, err := db.New()
 	if err != nil {
-		log.Fatal(err)
+		log.Crit("Failed to create db connection: " + err.Error())
+		os.Exit(1)
 	}
 
 	createSchema(db)
@@ -35,7 +38,7 @@ func createSchema(db *sql.DB) {
 	if !checkIfExists(db, c) {
 		_, err := db.Exec("CREATE SCHEMA \"goplant\"")
 		if err != nil {
-			log.Fatal(err)
+			log.Error("Failed to create goplant schema: " + err.Error())
 		}
 	}
 }
@@ -47,11 +50,11 @@ func createTables(db *sql.DB) {
 	for _, t := range tNames {
 		q := fmt.Sprintf(isExists, "table", "tables", "table", t)
 		if !checkIfExists(db, q) {
-			fmt.Println("Creating table: ", t)
+			log.Debug("Creating Table " + t)
 			s := fmt.Sprintf(cT, t, t)
 			_, err := db.Exec(s)
 			if err != nil {
-				log.Fatal(err)
+				log.Error("Failed to create sensor data tables: " + err.Error())
 			}
 
 		}
@@ -65,7 +68,7 @@ func checkIfExists(db *sql.DB, q string) bool {
 	defer row.Close()
 
 	if err != nil {
-		log.Fatal(err)
+		log.Error("Failed to check if schema already exists: " + err.Error())
 	}
 
 	row.Next()
