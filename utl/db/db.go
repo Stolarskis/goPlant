@@ -2,28 +2,38 @@ package db
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
 	"os"
+
+	log "github.com/inconshreveable/log15"
 )
 
+type DbConfig struct {
+	User string
+	Pass string
+	Name string
+	Host string
+}
+
+var DbStg DbConfig
+
 func New() (*sql.DB, error) {
-
-	dbU := os.Getenv("DB_USER")
-	dbP := os.Getenv("DB_PASSWORD")
-	dbN := os.Getenv("DB_NAME")
-	dbH := os.Getenv("DB_HOST")
-
-	if dbU == "" || dbP == "" || dbN == "" {
-		return nil, errors.New("Database env var not set")
+	if (DbStg == DbConfig{}) {
+		log.Crit("Database settings have not been initialized")
+		os.Exit(1)
 	}
 
-	connStr := fmt.Sprintf("user=%s password=%s dbname=%s host=%s sslmode=disable", dbU, dbP, dbN, dbH)
+	log.Debug(
+		"Database User: " + DbStg.User +
+			"\n Database Name: " + DbStg.Name +
+			"\n Database Host: " + DbStg.Host +
+			"\n Database Password: " + DbStg.Pass)
+
+	connStr := fmt.Sprintf("user=%s password=%s dbname=%s host=%s sslmode=disable", DbStg.User, DbStg.Pass, DbStg.Name, DbStg.Host)
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		return nil, err
 	}
 
 	return db, nil
-
 }
