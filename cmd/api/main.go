@@ -1,8 +1,9 @@
 package main
 
 import (
-	"log"
+	"os"
 
+	log "github.com/inconshreveable/log15"
 	"github.com/spf13/viper"
 	"github.com/stolarskis/goPlant/pkg/platform/pgsql"
 	"github.com/stolarskis/goPlant/utl/db"
@@ -23,7 +24,8 @@ func main() {
 
 	err := viper.ReadInConfig()
 	if err != nil {
-		log.Fatal("Failed to read config file")
+		log.Crit("Failed to read config file")
+		os.Exit(1)
 	}
 	viper.UnmarshalKey("db", &dbC)
 	viper.UnmarshalKey("server", &sC)
@@ -33,11 +35,15 @@ func main() {
 
 	db, err := db.New()
 	if err != nil {
-		log.Fatal(err)
+		log.Error(err.Error())
+		os.Exit(1)
 	}
 	pgsql.DB = db
 
 	m := goji.NewMux()
 	server.NewHTTP(m)
 	server.Start(m)
+	if err != nil {
+		log.Error(err.Error())
+	}
 }

@@ -2,9 +2,10 @@ package server
 
 import (
 	"fmt"
-	"log"
 	"net/http"
+	"os"
 
+	log "github.com/inconshreveable/log15"
 	"github.com/stolarskis/goPlant/pkg/transport"
 	"goji.io"
 	"goji.io/pat"
@@ -29,12 +30,14 @@ func NewHTTP(m *goji.Mux) {
 func Start(m *goji.Mux) {
 
 	if (ServerStg == ServerConfig{}) {
-		log.Fatal("Server settings have not been initialized.")
+		log.Crit("Server settings have not been initialized.")
+		os.Exit(1)
 	}
 
-	fmt.Println(ServerStg.Host, ServerStg.Port)
+	log.Debug("Server Host: " + ServerStg.Host + " Server Port: " + ServerStg.Port)
 	err := http.ListenAndServe(fmt.Sprintf("%s:%s", ServerStg.Host, ServerStg.Port), m)
 	if err != nil {
-		log.Fatal(err)
+		log.Crit("Failed to start server: " + err.Error())
 	}
+	log.Debug("Server Started Successfully")
 }
