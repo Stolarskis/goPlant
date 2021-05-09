@@ -17,7 +17,7 @@ VALUES($1, CURRENT_DATE, $2);`
 func UploadData(sd SensorData.SensorData) {
 
 	log.Debug("Storing Data in Db." +
-		"\n Sensor Type: " + sd.SensorType +
+		"\n Sensor Type: " + sd.SensorType.ToString() +
 		"\n Sensor Value: " + sd.Value)
 
 	_, err := DB.Exec(ps, sd.Value, sd.RDate)
