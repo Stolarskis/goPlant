@@ -10,17 +10,29 @@ import (
 
 var DB *sql.DB
 
-const ps = `INSERT INTO goplant.moisture
-(value, createdate, recordtime)
-VALUES($1, CURRENT_DATE, $2);`
+var TableNames = map[SensorData.SensorType]string{
+	SensorData.SoilMoistureSensor: "soilMoisture",
+	SensorData.SoilTempSensor:     "soilTemperature",
+	SensorData.AirTempSensor:      "airTemperature",
+	SensorData.LightSensor:        "light",
+	SensorData.HumiditySensor:     "humidity",
+}
+
+var uploadQueries = map[SensorData.SensorType]string{
+	SensorData.SoilMoistureSensor: mAddData,
+	SensorData.SoilTempSensor:     sTAddData,
+	SensorData.AirTempSensor:      aTAddData,
+	SensorData.LightSensor:        lAddData,
+	SensorData.HumiditySensor:     hAddData,
+}
 
 func UploadData(sd SensorData.SensorData) {
 
-	log.Debug("Storing Data in Db." +
+	log.Debug("Storing Data into Table: " + TableNames[sd.SensorType] +
 		"\n Sensor Type: " + sd.SensorType.ToString() +
 		"\n Sensor Value: " + sd.Value)
 
-	_, err := DB.Exec(ps, sd.Value, sd.RDate)
+	_, err := DB.Exec(uploadQueries[sd.SensorType], sd.Value, sd.RDate)
 	if err != nil {
 		log.Error(err.Error())
 	}

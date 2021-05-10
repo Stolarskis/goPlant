@@ -3,9 +3,11 @@ package SensorData
 type SensorType int
 
 const (
-	MoistureSensor    SensorType = iota
-	TemperatureSensor SensorType = iota
-	LightSensor       SensorType = iota
+	SoilMoistureSensor SensorType = iota
+	SoilTempSensor     SensorType = iota
+	AirTempSensor      SensorType = iota
+	HumiditySensor     SensorType = iota
+	LightSensor        SensorType = iota
 )
 
 type SensorData struct {
@@ -18,10 +20,14 @@ type SensorData struct {
 
 func (sT SensorType) ToString() string {
 	switch sT {
-	case MoistureSensor:
-		return "Moisture"
-	case TemperatureSensor:
-		return "Temperature"
+	case SoilMoistureSensor:
+		return "Soil Moisture"
+	case SoilTempSensor:
+		return "Soil Temperature"
+	case AirTempSensor:
+		return "Air Temperature"
+	case HumiditySensor:
+		return "Air Humidity"
 	case LightSensor:
 		return "Light"
 	}

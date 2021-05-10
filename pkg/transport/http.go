@@ -16,21 +16,35 @@ import (
 type Handler struct{}
 
 func (h Handler) MoistureData(w http.ResponseWriter, r *http.Request) {
-	err := uploadData(r, SensorData.MoistureSensor)
+	err := uploadData(r, SensorData.SoilMoistureSensor)
 	if err != nil {
 		log.Error(err.Error())
 	}
 }
 
-func (h Handler) TempData(w http.ResponseWriter, r *http.Request) {
-	err := uploadData(r, SensorData.TemperatureSensor)
+func (h Handler) SoilTempData(w http.ResponseWriter, r *http.Request) {
+	err := uploadData(r, SensorData.SoilTempSensor)
 	if err != nil {
 		log.Error(err.Error())
 	}
 }
 
-func (h Handler) lightData(w http.ResponseWriter, r *http.Request) {
+func (h Handler) AirTempData(w http.ResponseWriter, r *http.Request) {
+	err := uploadData(r, SensorData.AirTempSensor)
+	if err != nil {
+		log.Error(err.Error())
+	}
+}
+
+func (h Handler) LightData(w http.ResponseWriter, r *http.Request) {
 	err := uploadData(r, SensorData.LightSensor)
+	if err != nil {
+		log.Error(err.Error())
+	}
+}
+
+func (h Handler) HumidityData(w http.ResponseWriter, r *http.Request) {
+	err := uploadData(r, SensorData.HumiditySensor)
 	if err != nil {
 		log.Error(err.Error())
 	}
