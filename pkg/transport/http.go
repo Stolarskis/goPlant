@@ -2,11 +2,12 @@ package transport
 
 import (
 	"encoding/json"
+	"errors"
+	"io"
 	"io/ioutil"
 	"net/http"
 
 	log "github.com/inconshreveable/log15"
-
 	"github.com/stolarskis/goPlant/pkg/platform/pgsql"
 
 	"github.com/stolarskis/goPlant/pkg/SensorData"
@@ -14,31 +15,69 @@ import (
 
 type Handler struct{}
 
-type DataUploadReq struct {
-	SensorId   string `json:"id"`
-	PlantId    string `json:"plantId"`
-	SensorType string `json:"sensorType"`
-	Value      string `json:"value"`
-	RDate      string `json:"recordDate"`
+func (h Handler) MoistureData(w http.ResponseWriter, r *http.Request) {
+	err := uploadData(r, SensorData.MoistureSensor)
+	if err != nil {
+		log.Error(err.Error())
+	}
 }
 
-func (h Handler) MoistureData(w http.ResponseWriter, r *http.Request) {
-	res, err := ioutil.ReadAll(r.Body)
+func (h Handler) TempData(w http.ResponseWriter, r *http.Request) {
+	err := uploadData(r, SensorData.TemperatureSensor)
 	if err != nil {
-		log.Error("Moisture: Failed to read request body. " + err.Error())
+		log.Error(err.Error())
+	}
+}
+
+func (h Handler) lightData(w http.ResponseWriter, r *http.Request) {
+	err := uploadData(r, SensorData.LightSensor)
+	if err != nil {
+		log.Error(err.Error())
+	}
+}
+
+func uploadData(r *http.Request, sT SensorData.SensorType) error {
+	sd, err := convertRequest(r)
+	if err != nil {
+		return err
 	}
 
-	dReq := DataUploadReq{}
-	err = json.Unmarshal(res, &dReq)
-	if err != nil {
-		log.Error("Moisture: Failed to unmarshal request. " + err.Error())
-	}
-
-	sd := SensorData.SensorData(dReq)
+	sd.SensorType = sT
 
 	pgsql.UploadData(sd)
+
+	return nil
 }
 
-// func (h Handler) tempData(w http.ResponseWriter, r *http.Request) {}
+func convertRequest(r *http.Request) (SensorData.SensorData, error) {
+	d, err := readBody(r.Body)
+	if err != nil {
+		return SensorData.SensorData{}, err
+	}
 
-// func (h Handler) lightData(w http.ResponseWriter, r *http.Request) {}
+	req, err := unmarshalData(d)
+	if err != nil {
+		return SensorData.SensorData{}, err
+	}
+
+	return req.convertToSensorData(), nil
+}
+
+func readBody(b io.ReadCloser) ([]byte, error) {
+	res, err := ioutil.ReadAll(b)
+	if err != nil {
+		return nil, errors.New("Moisture: Failed to read request body. " + err.Error())
+	}
+
+	return res, nil
+}
+
+func unmarshalData(b []byte) (DataUploadReq, error) {
+	dReq := DataUploadReq{}
+	err := json.Unmarshal(b, &dReq)
+	if err != nil {
+		return DataUploadReq{}, errors.New("Moisture: Failed to unmarshal request. " + err.Error())
+	}
+
+	return dReq, nil
+}
