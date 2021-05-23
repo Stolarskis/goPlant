@@ -26,7 +26,7 @@ var uploadQueries = map[SensorData.SensorType]string{
 	SensorData.HumiditySensor:     hAddData,
 }
 
-func UploadData(sd SensorData.SensorData) {
+func UploadData(sd SensorData.SensorData) error {
 
 	log.Debug("Storing Data into Table: " + TableNames[sd.SensorType] +
 		"\n Sensor Type: " + sd.SensorType.ToString() +
@@ -35,5 +35,7 @@ func UploadData(sd SensorData.SensorData) {
 	_, err := DB.Exec(uploadQueries[sd.SensorType], sd.Value, sd.RDate)
 	if err != nil {
 		log.Error(err.Error())
+		return err
 	}
+	return nil
 }

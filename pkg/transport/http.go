@@ -19,6 +19,11 @@ func (h Handler) MoistureData(w http.ResponseWriter, r *http.Request) {
 	err := uploadData(r, SensorData.SoilMoistureSensor)
 	if err != nil {
 		log.Error(err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+	} else {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Moisture data uploaded successfully"))
 	}
 }
 
@@ -26,6 +31,11 @@ func (h Handler) SoilTempData(w http.ResponseWriter, r *http.Request) {
 	err := uploadData(r, SensorData.SoilTempSensor)
 	if err != nil {
 		log.Error(err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+	} else {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Soil temperature data uploaded successfully"))
 	}
 }
 
@@ -33,6 +43,12 @@ func (h Handler) AirTempData(w http.ResponseWriter, r *http.Request) {
 	err := uploadData(r, SensorData.AirTempSensor)
 	if err != nil {
 		log.Error(err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		w.Write([]byte("Air temperature data uploaded successfully"))
+	} else {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Air temperature data uploaded successfully"))
 	}
 }
 
@@ -40,6 +56,12 @@ func (h Handler) LightData(w http.ResponseWriter, r *http.Request) {
 	err := uploadData(r, SensorData.LightSensor)
 	if err != nil {
 		log.Error(err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		w.Write([]byte("Humidity data uploaded successfully"))
+	} else {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Humidity data uploaded successfully"))
 	}
 }
 
@@ -47,6 +69,11 @@ func (h Handler) HumidityData(w http.ResponseWriter, r *http.Request) {
 	err := uploadData(r, SensorData.HumiditySensor)
 	if err != nil {
 		log.Error(err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+	} else {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Humidity data uploaded successfully"))
 	}
 }
 
@@ -58,7 +85,10 @@ func uploadData(r *http.Request, sT SensorData.SensorType) error {
 
 	sd.SensorType = sT
 
-	pgsql.UploadData(sd)
+	err = pgsql.UploadData(sd)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
