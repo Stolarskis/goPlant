@@ -23,8 +23,10 @@ func NewHTTP(m *goji.Mux) {
 	h := transport.Handler{}
 
 	m.HandleFunc(pat.Post("/data/moisture"), h.MoistureData)
-	// m.HandleFunc(pat.Post("/data/temperature"))
-	// m.HandleFunc(pat.Post("/data/light"))
+	m.HandleFunc(pat.Post("/data/soilTemp"), h.SoilTempData)
+	m.HandleFunc(pat.Post("/data/airTemp"), h.AirTempData)
+	m.HandleFunc(pat.Post("/data/humidity"), h.HumidityData)
+	m.HandleFunc(pat.Post("/data/light"), h.LightData)
 }
 
 func Start(m *goji.Mux) {

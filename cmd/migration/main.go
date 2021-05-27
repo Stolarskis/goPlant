@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/stolarskis/goPlant/pkg/platform/pgsql"
+
 	log "github.com/inconshreveable/log15"
 
 	"github.com/spf13/viper"
@@ -14,10 +16,10 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var tNames = []string{"moisture", "temperature", "light"}
-
 const sname = "goPlant"
 const isExists = "SELECT EXISTS(SELECT %s_name FROM information_schema.%s WHERE %s_name = '%s');"
+
+var TableNames = pgsql.TableNames
 
 func main() {
 
@@ -65,7 +67,7 @@ func createTables(db *sql.DB) {
 
 	const cT = "CREATE TABLE goplant.%s (id serial NOT NULL, value int4 NOT NULL, createdate date NULL DEFAULT CURRENT_DATE, recordtime date NULL, CONSTRAINT %s_pk PRIMARY KEY (id));"
 
-	for _, t := range tNames {
+	for _, t := range TableNames {
 		q := fmt.Sprintf(isExists, "table", "tables", "table", t)
 		if !checkIfExists(db, q) {
 			log.Debug("Creating Table " + t)
