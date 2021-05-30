@@ -1,4 +1,10 @@
 language: go
 
-go:
-- master
+services:
+  - docker
+
+before_install:
+  - docker build -t stolarskis/goplant .
+  - docker run -d stolarskis/goplant /bin/sh -c "cd /root/goPlant; bundle exec foreman start;"
+  - docker ps -a
+  - docker run stolarskis/goPlant /bin/sh -c "cd /root/goPlant"
