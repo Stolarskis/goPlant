@@ -1,6 +1,8 @@
  No newline at end of file
 # goPlant
 
+[![Build Status](https://travis-ci.com/Stolarskis/goPlant.svg?branch=main)](https://travis-ci.com/Stolarskis/goPlant)
+
 Api component for storing plant sensor data.
 
 Endpoints for api represent each sensor type.
