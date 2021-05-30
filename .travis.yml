@@ -5,4 +5,4 @@ services:
 
 before_install:
   - docker build -f dockerfileTest -t stolarskis/goplant .
-  - docker run stolarskis/goplant"
+  - docker run stolarskis/goplant
