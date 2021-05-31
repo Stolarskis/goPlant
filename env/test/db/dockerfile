@@ -1,21 +1,8 @@
-FROM golang:latest as migrationScriptBuilder
-WORKDIR /home
-COPY . ./ 
-RUN go build -o migrationScript ./cmd/migration/main.go
-
 FROM postgres:latest
 EXPOSE 5342:5342
-WORKDIR /home
-COPY --from=migrationScriptBuilder /home/migrationScript ./
-COPY --from=migrationScriptBuilder /home/configs/test/config.yaml ./
+
+COPY ./env/test/db/testDbDump.sql /docker-entrypoint-initdb.d
+
 ENV POSTGRES_PASSWORD="postgres"
 ENV POSTGRES_USERNAME="postgres"
 ENV POSTGRES_DB="gobase"
-RUN postgres &
-#wait somehow
-RUN chmod +x migrationScript && ./migrationScript
-
-# Maybe shutdown postgres and set the config to start the db?
-
-# Bring postgres to for front
-CMD ["fg"]

@@ -59,7 +59,7 @@ func getEnvPath() (string, error) {
 			"The names of the environments are the names of the directories that contain them, such as \"local\" or \"test\"")
 	}
 
-	path := "./configs/" + env + "/"
+	path := "./env/" + env + "/"
 
 	return path, nil
 }
