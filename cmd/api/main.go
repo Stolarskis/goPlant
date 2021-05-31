@@ -3,8 +3,9 @@ package main
 import (
 	"os"
 
+	"github.com/stolarskis/goPlant/utl/config"
+
 	log "github.com/inconshreveable/log15"
-	"github.com/spf13/viper"
 	"github.com/stolarskis/goPlant/pkg/platform/pgsql"
 	"github.com/stolarskis/goPlant/utl/db"
 	"github.com/stolarskis/goPlant/utl/server"
@@ -15,20 +16,10 @@ import (
 
 func main() {
 
-	viper.AddConfigPath("./")
-	viper.SetConfigName("config")
-	viper.SetConfigType("yaml")
-
-	dbC := db.DbConfig{}
-	sC := server.ServerConfig{}
-
-	err := viper.ReadInConfig()
+	dbC, sC, err := config.GetDbSettings()
 	if err != nil {
-		log.Crit("Failed to read config file")
-		os.Exit(1)
+		log.Error(err.Error())
 	}
-	viper.UnmarshalKey("db", &dbC)
-	viper.UnmarshalKey("server", &sC)
 
 	db.DbStg = dbC
 	server.ServerStg = sC

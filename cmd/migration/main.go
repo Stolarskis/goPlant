@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/stolarskis/goPlant/utl/config"
+
 	"github.com/stolarskis/goPlant/pkg/platform/pgsql"
 
 	log "github.com/inconshreveable/log15"
 
-	"github.com/spf13/viper"
 	"github.com/stolarskis/goPlant/utl/db"
-	"github.com/stolarskis/goPlant/utl/server"
 
 	_ "github.com/lib/pq"
 )
@@ -23,19 +23,10 @@ var TableNames = pgsql.TableNames
 
 func main() {
 
-	viper.AddConfigPath("./")
-	viper.SetConfigName("config")
-	viper.SetConfigType("yaml")
-
-	dbC := db.DbConfig{}
-	sC := server.ServerConfig{}
-
-	err := viper.ReadInConfig()
+	dbC, _, err := config.GetDbSettings()
 	if err != nil {
-		log.Crit("Failed to read config file")
+		log.Crit(err.Error())
 	}
-	viper.UnmarshalKey("db", &dbC)
-	viper.UnmarshalKey("server", &sC)
 
 	db.DbStg = dbC
 
@@ -47,7 +38,6 @@ func main() {
 
 	createSchema(db)
 	createTables(db)
-
 }
 
 func createSchema(db *sql.DB) {
