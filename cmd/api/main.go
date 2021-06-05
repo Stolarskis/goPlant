@@ -3,8 +3,6 @@ package main
 import (
 	"os"
 
-	"github.com/stolarskis/goPlant/utl/config"
-
 	log "github.com/inconshreveable/log15"
 	"github.com/stolarskis/goPlant/pkg/platform/pgsql"
 	"github.com/stolarskis/goPlant/utl/db"
@@ -16,15 +14,7 @@ import (
 
 func main() {
 
-	dbC, sC, err := config.GetDbSettings()
-	if err != nil {
-		log.Error(err.Error())
-	}
-
-	db.DbStg = dbC
-	server.ServerStg = sC
-
-	db, err := db.New()
+	db, err := db.New("")
 	if err != nil {
 		log.Error(err.Error())
 		os.Exit(1)
@@ -33,7 +23,7 @@ func main() {
 
 	m := goji.NewMux()
 	server.NewHTTP(m)
-	server.Start(m)
+	server.Start("", m)
 	if err != nil {
 		log.Error(err.Error())
 	}

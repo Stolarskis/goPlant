@@ -2,27 +2,36 @@ package config
 
 import (
 	"errors"
-	"os"
 
+	log "github.com/inconshreveable/log15"
 	"github.com/spf13/viper"
-	"github.com/stolarskis/goPlant/utl/db"
-	"github.com/stolarskis/goPlant/utl/server"
 )
 
-func GetDbSettings() (db.DbConfig, server.ServerConfig, error) {
+type DbConfig struct {
+	User string
+	Pass string
+	Name string
+	Host string
+}
 
-	env, err := getEnvPath()
+type SvcConfig struct {
+	Host string
+	Port string
+}
+
+func GetDbSettings(configPath string) (DbConfig, SvcConfig, error) {
+
+	path, err := getConfigPath(configPath)
 	if err != nil {
-		return db.DbConfig{}, server.ServerConfig{}, err
+		log.Warn(err.Error())
 	}
 
-	setViperStg(env)
+	setViperStg(path)
 
 	dbC, sC, err := readConf()
 
 	if err != nil {
-
-		return db.DbConfig{}, server.ServerConfig{}, err
+		return DbConfig{}, SvcConfig{}, err
 	}
 
 	return dbC, sC, nil
@@ -35,10 +44,12 @@ func setViperStg(env string) {
 	viper.SetConfigType("yaml")
 }
 
-func readConf() (db.DbConfig, server.ServerConfig, error) {
-	dbC := db.DbConfig{}
-	sC := server.ServerConfig{}
+func readConf() (DbConfig, SvcConfig, error) {
+	dbC := DbConfig{}
+	sC := SvcConfig{}
 
+	viper.SetConfigName("config")
+	viper.SetConfigType("yaml")
 	err := viper.ReadInConfig()
 	if err != nil {
 		return dbC, sC, errors.New("Failed to read config file")
@@ -50,16 +61,11 @@ func readConf() (db.DbConfig, server.ServerConfig, error) {
 	return dbC, sC, nil
 }
 
-func getEnvPath() (string, error) {
-	env := os.Getenv("CONFIG_ENV")
+func getConfigPath(cp string) (string, error) {
 
-	if env == "" {
-		return "", errors.New("Environment config environment variable, \"CONFIG_ENV\" is not set. \n" +
-			"To set Environment config set environment variable CONFIG_ENV to a config environment. \n" +
-			"The names of the environments are the names of the directories that contain them, such as \"local\" or \"test\"")
+	if cp == "" {
+		return "env/local/", errors.New("ConfigPath is empty, using default local config")
 	}
 
-	path := "./env/" + env + "/"
-
-	return path, nil
+	return cp, nil
 }

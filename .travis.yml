@@ -1,8 +1,7 @@
 language: go
 
-services:
-  - docker
+env:
+  - DOCKER_COMPOSE_VERSION=1.4.2
 
 before_install:
-  - docker build -f dockerfileTest -t stolarskis/goplant .
-  - docker run stolarskis/goplant
+  - docker-compose -f ./env/test/docker-compose.yml up

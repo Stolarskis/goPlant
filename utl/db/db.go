@@ -6,30 +6,28 @@ import (
 	"os"
 
 	log "github.com/inconshreveable/log15"
+	"github.com/stolarskis/goPlant/utl/config"
 )
 
-type DbConfig struct {
-	User string
-	Pass string
-	Name string
-	Host string
-}
+func New(configPath string) (*sql.DB, error) {
 
-var DbStg DbConfig
+	dbC, _, err := config.GetDbSettings(configPath)
+	if err != nil {
+		log.Crit(err.Error())
+	}
 
-func New() (*sql.DB, error) {
-	if (DbStg == DbConfig{}) {
+	if (dbC == config.DbConfig{}) {
 		log.Crit("Database settings have not been initialized")
 		os.Exit(1)
 	}
 
 	log.Debug(
-		"Database User: " + DbStg.User +
-			"\n Database Name: " + DbStg.Name +
-			"\n Database Host: " + DbStg.Host +
-			"\n Database Password: " + DbStg.Pass)
+		"Database User: " + dbC.User +
+			"\n Database Name: " + dbC.Name +
+			"\n Database Host: " + dbC.Host +
+			"\n Database Password: " + dbC.Pass)
 
-	connStr := fmt.Sprintf("user=%s password=%s dbname=%s host=%s sslmode=disable", DbStg.User, DbStg.Pass, DbStg.Name, DbStg.Host)
+	connStr := fmt.Sprintf("user=%s password=%s dbname=%s host=%s sslmode=disable", dbC.User, dbC.Pass, dbC.Name, dbC.Host)
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		return nil, err
