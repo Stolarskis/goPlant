@@ -11,5 +11,5 @@ language: go
 #  - chmod +x docker-compose
 #  - sudo mv docker-compose /usr/local/bin
 
-script:
-  - docker-compose -f env/test/docker-compose.yml up
+# script:
+#   - docker-compose -f env/test/docker-compose.yml up
