@@ -16,29 +16,29 @@ jobs:
     steps:
       - checkout
 
-      - run:
-          name: Waiting for Postgres to be ready
-          command: |
-            for i in `seq 1 10`;
-            do
-              nc -z localhost 5432 && echo Success && exit 0
-              echo -n .
-              sleep 1
-            done
-            echo Failed waiting for Postgress && exit 1
-      - run: mkdir -p $TEST_RESULTS
+      # - run:
+      #     name: Waiting for Postgres to be ready
+      #     command: |
+      #       for i in `seq 1 10`;
+      #       do
+      #         nc -z localhost 5432 && echo Success && exit 0
+      #         echo -n .
+      #         sleep 1
+      #       done
+      #       echo Failed waiting for Postgress && exit 1
+      # - run: mkdir -p $TEST_RESULTS
 
-      - run:
-          name: Run unit tests
-          environment:
-            DATABASE_URL: "postgres://ubuntu@localhost:5432/contacts?sslmode=disable"
-            DB_MIGRATIONS: /go/src/github.com/circleci/cci-demo-docker/db/migrations
-          command: |
-            set -ou pipefail
-            trap "go-junit-report <${TEST_RESULTS}/go-test.out > ${TEST_RESULTS}/go-test-report.xml" EXIT
-            # Notice this `set -o pipefail`, this will cause script to fail if `make test` fails
-            # without this option script will return success regardless of testing result due to pipe after test command
-            make test | tee ${TEST_RESULTS}/go-test.out
+      # - run:
+      #     name: Run unit tests
+      #     environment:
+      #       DATABASE_URL: "postgres://ubuntu@localhost:5432/contacts?sslmode=disable"
+      #       DB_MIGRATIONS: /go/src/github.com/circleci/cci-demo-docker/db/migrations
+      #     command: |
+      #       set -ou pipefail
+      #       trap "go-junit-report <${TEST_RESULTS}/go-test.out > ${TEST_RESULTS}/go-test-report.xml" EXIT
+      #       # Notice this `set -o pipefail`, this will cause script to fail if `make test` fails
+      #       # without this option script will return success regardless of testing result due to pipe after test command
+      #       make test | tee ${TEST_RESULTS}/go-test.out
       - setup_remote_docker
 
       # # This should go into custom primary image, here's only for the sake of explanation
