@@ -16,7 +16,3 @@
 
 .DS_STORE
 main
-
-
-config.yaml
-docker-compose.yml

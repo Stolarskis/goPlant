@@ -5,18 +5,13 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/stolarskis/goPlant/utl/config"
+
 	log "github.com/inconshreveable/log15"
 	"github.com/stolarskis/goPlant/pkg/transport"
 	"goji.io"
 	"goji.io/pat"
 )
-
-type ServerConfig struct {
-	Host string
-	Port string
-}
-
-var ServerStg ServerConfig
 
 func NewHTTP(m *goji.Mux) {
 
@@ -29,15 +24,20 @@ func NewHTTP(m *goji.Mux) {
 	m.HandleFunc(pat.Post("/data/light"), h.LightData)
 }
 
-func Start(m *goji.Mux) {
+func Start(configPath string, m *goji.Mux) {
 
-	if (ServerStg == ServerConfig{}) {
+	_, svcConf, err := config.GetDbSettings(configPath)
+	if err != nil {
+		log.Crit(err.Error())
+	}
+
+	if (svcConf == config.SvcConfig{}) {
 		log.Crit("Server settings have not been initialized.")
 		os.Exit(1)
 	}
 
-	log.Debug("Server Host: " + ServerStg.Host + " Server Port: " + ServerStg.Port)
-	err := http.ListenAndServe(fmt.Sprintf("%s:%s", ServerStg.Host, ServerStg.Port), m)
+	log.Debug("Server Host: " + svcConf.Host + " Server Port: " + svcConf.Port)
+	err = http.ListenAndServe(fmt.Sprintf("%s:%s", svcConf.Host, svcConf.Port), m)
 	if err != nil {
 		log.Crit("Failed to start server: " + err.Error())
 	}
