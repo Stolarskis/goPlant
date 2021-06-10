@@ -1,7 +1,7 @@
  No newline at end of file
 # goPlant
 
-[![Build Status](https://travis-ci.com/Stolarskis/goPlant.svg?branch=main)](https://travis-ci.com/Stolarskis/goPlant)
+[![Stolarskis](https://circleci.com/gh/Stolarskis/goPlant.svg?style=shield)](https://app.circleci.com/pipelines/github/Stolarskis)
 
 Api component for storing plant sensor data.
 
