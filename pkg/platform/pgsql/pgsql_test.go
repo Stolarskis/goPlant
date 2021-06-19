@@ -18,6 +18,34 @@ var tSensorData = []SensorData.SensorData{
 		RDate:      "1/23/21",
 		SensorType: SensorData.LightSensor,
 	},
+	{
+		SensorId:   "1",
+		PlantId:    "1",
+		Value:      "10",
+		RDate:      "1/23/21",
+		SensorType: SensorData.AirTempSensor,
+	},
+	{
+		SensorId:   "1",
+		PlantId:    "1",
+		Value:      "10",
+		RDate:      "1/23/21",
+		SensorType: SensorData.SoilMoistureSensor,
+	},
+	{
+		SensorId:   "1",
+		PlantId:    "1",
+		Value:      "10",
+		RDate:      "1/23/21",
+		SensorType: SensorData.SoilTempSensor,
+	},
+	{
+		SensorId:   "1",
+		PlantId:    "1",
+		Value:      "10",
+		RDate:      "1/23/21",
+		SensorType: SensorData.HumiditySensor,
+	},
 }
 
 func TestUpload(t *testing.T) {
