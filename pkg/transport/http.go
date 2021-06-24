@@ -15,7 +15,7 @@ import (
 
 type Handler struct{}
 
-func (h Handler) MoistureData(w http.ResponseWriter, r *http.Request) {
+func (h Handler) PostMoistureData(w http.ResponseWriter, r *http.Request) {
 	err := uploadData(r, SensorData.SoilMoistureSensor)
 	if err != nil {
 		log.Error(err.Error())
@@ -27,7 +27,7 @@ func (h Handler) MoistureData(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h Handler) SoilTempData(w http.ResponseWriter, r *http.Request) {
+func (h Handler) PostSoilTempData(w http.ResponseWriter, r *http.Request) {
 	err := uploadData(r, SensorData.SoilTempSensor)
 	if err != nil {
 		log.Error(err.Error())
@@ -39,7 +39,7 @@ func (h Handler) SoilTempData(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h Handler) AirTempData(w http.ResponseWriter, r *http.Request) {
+func (h Handler) PostAirTempData(w http.ResponseWriter, r *http.Request) {
 	err := uploadData(r, SensorData.AirTempSensor)
 	if err != nil {
 		log.Error(err.Error())
@@ -52,7 +52,7 @@ func (h Handler) AirTempData(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h Handler) LightData(w http.ResponseWriter, r *http.Request) {
+func (h Handler) PostLightData(w http.ResponseWriter, r *http.Request) {
 	err := uploadData(r, SensorData.LightSensor)
 	if err != nil {
 		log.Error(err.Error())
@@ -65,7 +65,7 @@ func (h Handler) LightData(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h Handler) HumidityData(w http.ResponseWriter, r *http.Request) {
+func (h Handler) PostHumidityData(w http.ResponseWriter, r *http.Request) {
 	err := uploadData(r, SensorData.HumiditySensor)
 	if err != nil {
 		log.Error(err.Error())
