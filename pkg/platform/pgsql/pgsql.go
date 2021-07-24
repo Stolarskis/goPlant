@@ -3,6 +3,8 @@ package pgsql
 import (
 	"database/sql"
 	"errors"
+	"math"
+	"strconv"
 
 	log "github.com/inconshreveable/log15"
 
@@ -37,11 +39,16 @@ var getQueries = map[SensorData.SensorType]string{
 
 func UploadData(sd SensorData.SensorData) error {
 
+	v, err := roundSensorVal(sd.Value, 0.001, 3)
+	if err != nil {
+		return err
+	}
+
 	log.Debug("Storing Data into Table: " + TableNames[sd.SensorType] +
 		"\n Sensor Type: " + sd.SensorType.ToString() +
-		"\n Sensor Value: " + sd.Value)
+		"\n Sensor Value: " + v)
 
-	_, err := DB.Exec(uploadQueries[sd.SensorType], sd.Value, sd.RDate)
+	_, err = DB.Exec(uploadQueries[sd.SensorType], v, sd.RDate)
 	if err != nil {
 		return err
 	}
@@ -76,4 +83,19 @@ func getFirstRowVal(r *sql.Rows) (float32, error) {
 	}
 
 	return *v, nil
+}
+
+func roundSensorVal(v string, unit float64, prec int) (string, error) {
+	r, err := strconv.ParseFloat(v, 64)
+	if err != nil {
+		return "", err
+	}
+	r = math.Round(r/unit) * unit
+
+	rS := strconv.FormatFloat(r, 'f', prec, 64)
+	if rS == "" {
+		return "", errors.New("pgSql: Failed to convert rounded sensor value back into string")
+	}
+
+	return rS, nil
 }

@@ -20,42 +20,22 @@ const hAddData = `INSERT INTO  goplant.humidity
 (value, createdate, recordtime)
 VALUES($1, CURRENT_DATE, $2);`
 
-const mGetLastVal = `SELECT t.value
-FROM goplant.soilmoisture t
-INNER JOIN (
-    SELECT id, recordtime, max(recordtime) as MaxDate
-    FROM goplant.soilmoisture
-    GROUP BY id,recordtime
-) tm on t.id = tm.id and t.recordtime = tm.MaxDate`
+const mGetLastVal = `SELECT value 
+FROM goplant.soilmoisture
+WHERE recordtime = (SELECT MAX(recordtime) FROM goplant.soilmoisture)`
 
-const stGetLastVal = `SELECT t.value
-FROM goplant.soilTemperature t
-INNER JOIN (
-    SELECT id, recordtime, max(recordtime) as MaxDate
-    FROM goplant.soiltemperature
-    GROUP BY id,recordtime
-) tm on t.id = tm.id and t.recordtime = tm.MaxDate`
+const stGetLastVal = `SELECT value
+FROM goplant.soiltemperature
+WHERE recordtime = (SELECT MAX(recordtime) FROM goplant.soiltemperature)`
 
-const atGetLastVal = `SELECT t.value
-FROM goplant.airTemperature t
-INNER JOIN (
-    SELECT id, recordtime, max(recordtime) as MaxDate
-    FROM goplant.airtemperature
-    GROUP BY id,recordtime
-) tm on t.id = tm.id and t.recordtime = tm.MaxDate`
+const atGetLastVal = `SELECT value
+FROM goplant.airtemperature
+WHERE recordtime = (SELECT MAX(recordtime) FROM goplant.airtemperature)`
 
-const lGetLastVal = `SELECT t.value
-FROM goplant.light t
-INNER JOIN (
-    SELECT id, recordtime, max(recordtime) as MaxDate
-    FROM goplant.light
-    GROUP BY id,recordtime
-) tm on t.id = tm.id and t.recordtime = tm.MaxDate`
+const lGetLastVal = `SELECT value
+FROM goplant.light
+WHERE recordtime = (SELECT MAX(recordtime) FROM goplant.light)`
 
-const hGetLastVal = `SELECT t.value
-FROM goplant.humidity t
-INNER JOIN (
-    SELECT id, recordtime, max(recordtime) as MaxDate
-    FROM goplant.humidity
-    GROUP BY id,recordtime
-) tm on t.id = tm.id and t.recordtime = tm.MaxDate`
+const hGetLastVal = `SELECT value
+FROM goplant.humidity
+WHERE recordtime = (SELECT MAX(recordtime) FROM goplant.humidity)`

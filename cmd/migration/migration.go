@@ -14,7 +14,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-type migrationConig struct {
+type migrationConfig struct {
 	dbName     string
 	configPath string
 }
@@ -24,7 +24,7 @@ const isExists = "SELECT EXISTS(SELECT %s_name FROM information_schema.%s WHERE 
 
 var TableNames = pgsql.TableNames
 
-func MigrateDb(config migrationConig) {
+func MigrateDb(config migrationConfig) {
 
 	db, err := db.New(config.configPath)
 	if err != nil {
