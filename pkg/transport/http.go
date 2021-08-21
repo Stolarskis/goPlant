@@ -15,7 +15,12 @@ import (
 
 type Handler struct{}
 
-func (h Handler) MoistureData(w http.ResponseWriter, r *http.Request) {
+type GetLatestSensorResp struct {
+	Val float32
+	Msg string
+}
+
+func (h Handler) PostMoistureData(w http.ResponseWriter, r *http.Request) {
 	err := uploadData(r, SensorData.SoilMoistureSensor)
 	if err != nil {
 		log.Error(err.Error())
@@ -27,7 +32,7 @@ func (h Handler) MoistureData(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h Handler) SoilTempData(w http.ResponseWriter, r *http.Request) {
+func (h Handler) PostSoilTempData(w http.ResponseWriter, r *http.Request) {
 	err := uploadData(r, SensorData.SoilTempSensor)
 	if err != nil {
 		log.Error(err.Error())
@@ -39,7 +44,7 @@ func (h Handler) SoilTempData(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h Handler) AirTempData(w http.ResponseWriter, r *http.Request) {
+func (h Handler) PostAirTempData(w http.ResponseWriter, r *http.Request) {
 	err := uploadData(r, SensorData.AirTempSensor)
 	if err != nil {
 		log.Error(err.Error())
@@ -52,7 +57,7 @@ func (h Handler) AirTempData(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h Handler) LightData(w http.ResponseWriter, r *http.Request) {
+func (h Handler) PostLightData(w http.ResponseWriter, r *http.Request) {
 	err := uploadData(r, SensorData.LightSensor)
 	if err != nil {
 		log.Error(err.Error())
@@ -65,7 +70,7 @@ func (h Handler) LightData(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h Handler) HumidityData(w http.ResponseWriter, r *http.Request) {
+func (h Handler) PostHumidityData(w http.ResponseWriter, r *http.Request) {
 	err := uploadData(r, SensorData.HumiditySensor)
 	if err != nil {
 		log.Error(err.Error())
@@ -75,6 +80,37 @@ func (h Handler) HumidityData(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Humidity data uploaded successfully"))
 	}
+}
+
+func (h Handler) GetSensorReading(w http.ResponseWriter, r *http.Request) {
+	sT, err := convertPathToSensorType(r.URL.Path)
+	resp := GetLatestSensorResp{}
+	if err != nil {
+		log.Error(err.Error())
+		w.WriteHeader(http.StatusNotFound)
+		resp.Msg = "Unable to determine Sensor Type"
+	}
+
+	v, err := getLatestSensorRead(sT)
+	if err != nil {
+		log.Error(err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		resp.Msg = "Unable to determine Sensor Type"
+	}
+
+	if v == -1 {
+		log.Debug("Sensor " + sT.ToString() + "s table is empty")
+		w.WriteHeader(http.StatusNotFound)
+		resp.Msg = "There are no stored readings for " + sT.ToString() + " sensor type"
+	} else {
+		log.Debug("Retrieved latest reading of " + sT.ToString() + " sensor")
+		w.WriteHeader(http.StatusOK)
+		resp.Msg = "Successfully retrieved " + sT.ToString() + " sensor's latest reading"
+		resp.Val = v
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(resp)
 }
 
 func uploadData(r *http.Request, sT SensorData.SensorType) error {
@@ -91,6 +127,15 @@ func uploadData(r *http.Request, sT SensorData.SensorType) error {
 	}
 
 	return nil
+}
+
+func getLatestSensorRead(s SensorData.SensorType) (float32, error) {
+	v, err := pgsql.GetLatestSensorReading(s)
+	if err != nil {
+		return 0, err
+	}
+
+	return v, nil
 }
 
 func convertRequest(r *http.Request) (SensorData.SensorData, error) {

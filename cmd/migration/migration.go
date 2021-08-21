@@ -14,7 +14,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-type migrationConig struct {
+type migrationConfig struct {
 	dbName     string
 	configPath string
 }
@@ -24,7 +24,7 @@ const isExists = "SELECT EXISTS(SELECT %s_name FROM information_schema.%s WHERE 
 
 var TableNames = pgsql.TableNames
 
-func MigrateDb(config migrationConig) {
+func MigrateDb(config migrationConfig) {
 
 	db, err := db.New(config.configPath)
 	if err != nil {
@@ -51,7 +51,7 @@ func createSchema(db *sql.DB) {
 
 func createTables(db *sql.DB) {
 
-	const cT = "CREATE TABLE goplant.%s (id serial NOT NULL, value int4 NOT NULL, createdate date NULL DEFAULT CURRENT_DATE, recordtime date NULL, CONSTRAINT %s_pk PRIMARY KEY (id));"
+	const cT = "CREATE TABLE goplant.%s (id serial NOT NULL, value decimal NOT NULL, recordtime timestamp NULL, createdate timestamp NULL DEFAULT CURRENT_DATE, CONSTRAINT %s_pk PRIMARY KEY (id));"
 
 	for _, t := range TableNames {
 		q := fmt.Sprintf(isExists, "table", "tables", "table", t)

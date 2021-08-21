@@ -8,6 +8,7 @@ const (
 	AirTempSensor      SensorType = iota
 	HumiditySensor     SensorType = iota
 	LightSensor        SensorType = iota
+	UnknownSensor      SensorType = iota
 )
 
 type SensorData struct {

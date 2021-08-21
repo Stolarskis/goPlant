@@ -17,11 +17,17 @@ func NewHTTP(m *goji.Mux) {
 
 	h := transport.Handler{}
 
-	m.HandleFunc(pat.Post("/data/moisture"), h.MoistureData)
-	m.HandleFunc(pat.Post("/data/soilTemp"), h.SoilTempData)
-	m.HandleFunc(pat.Post("/data/airTemp"), h.AirTempData)
-	m.HandleFunc(pat.Post("/data/humidity"), h.HumidityData)
-	m.HandleFunc(pat.Post("/data/light"), h.LightData)
+	m.HandleFunc(pat.Post("/data/moisture"), h.PostMoistureData)
+	m.HandleFunc(pat.Post("/data/soilTemp"), h.PostSoilTempData)
+	m.HandleFunc(pat.Post("/data/airTemp"), h.PostAirTempData)
+	m.HandleFunc(pat.Post("/data/humidity"), h.PostHumidityData)
+	m.HandleFunc(pat.Post("/data/light"), h.PostLightData)
+
+	m.HandleFunc(pat.Get("/data/moisture"), h.GetSensorReading)
+	m.HandleFunc(pat.Get("/data/soilTemp"), h.GetSensorReading)
+	m.HandleFunc(pat.Get("/data/airTemp"), h.GetSensorReading)
+	m.HandleFunc(pat.Get("/data/humidity"), h.GetSensorReading)
+	m.HandleFunc(pat.Get("/data/light"), h.GetSensorReading)
 }
 
 func Start(configPath string, m *goji.Mux) {
