@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-db-migration
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+  annotations:
+    "helm.sh/hook": post-install 
+    "helm.sh/hook-weight": "-10" 
+    "helm.sh/hook-delete-policy": hook-succeeded
+data:
+  DB_HOST: {{ include "goplant.fullname" . }}-postgresql
+  DB_PORT: {{ .Values.db.port | quote}}
+  DB_NAME: {{ .Values.db.name | quote}}
+  DB_USERNAME: {{ .Values.db.user | quote}}
+  DB_PASSWORD: {{ .Values.db.pass | quote}}
+  APP_HOST: {{ .Values.app.host | quote}}
+  APP_PORT: {{ .Values.app.port | quote}}
