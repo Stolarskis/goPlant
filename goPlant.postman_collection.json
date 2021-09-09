@@ -1,0 +1,1085 @@
+{
+	"info": {
+		"_postman_id": "fb4b9d7a-8a1e-4ebc-8324-088fda0030c0",
+		"name": "goPlant",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "TestSensorDataPostAndGet",
+			"item": [
+				{
+					"name": "Invalid Upload",
+					"item": [
+						{
+							"name": "humidity - Invalid Date",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 500\", function () {",
+											"        pm.response.to.have.status(500);",
+											"});",
+											"",
+											"pm.test(\"Body is correct\", function () {",
+											"    pm.response.to.have.body(\"pq: date/time field value out of range: \\\"14/13/21:12:12:01\\\"\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"1\",\n    \"plantId\":\"1\",\n    \"sensorType\":\"moisture\",\n    \"value\":\"123.0104\",\n    \"recordDate\": \"14/13/21:12:12:01\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{BASE_URL}}/data/humidity",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"data",
+										"humidity"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "uploadSensorData_oldDate",
+					"item": [
+						{
+							"name": "preCollectionScript",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"soilMoistureSensorValue\", _.random(1,100,true).toFixed(pm.environment.get(\"decimalPlaces\")));",
+											"pm.environment.set(\"soilTemperatureSensorValue\", _.random(1,100,true).toFixed(pm.environment.get(\"decimalPlaces\")));",
+											"pm.environment.set(\"airTemperatureSensorValue\", _.random(1,100,true).toFixed(pm.environment.get(\"decimalPlaces\")));",
+											"pm.environment.set(\"lightSensorValue\", _.random(1,100,true).toFixed(pm.environment.get(\"decimalPlaces\")));",
+											"pm.environment.set(\"humiditySensorValue\", _.random(1,100,true).toFixed(pm.environment.get(\"decimalPlaces\")));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{BASE_URL}}:{{PORT}}",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"port": "{{PORT}}"
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "soil_moisture",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"        pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"1\",\n    \"plantId\":\"1\",\n    \"sensorType\":\"moisture\",\n    \"value\": \"{{soilMoistureSensorValue}}\",\n    \"recordDate\": \"{{oldestDate}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{BASE_URL}}:{{PORT}}/data/moisture",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"port": "{{PORT}}",
+									"path": [
+										"data",
+										"moisture"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "soil_temperature",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"        pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"1\",\n    \"plantId\":\"1\",\n    \"sensorType\":\"moisture\",\n    \"value\": \"{{soilTemperatureSensorValue}}\",\n    \"recordDate\":  \"{{oldestDate}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{BASE_URL}}:{{PORT}}/data/soilTemp",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"port": "{{PORT}}",
+									"path": [
+										"data",
+										"soilTemp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "air_temperature",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"        pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"1\",\n    \"plantId\":\"1\",\n    \"sensorType\":\"moisture\",\n    \"value\":\"{{airTemperatureSensorValue}}\",\n    \"recordDate\": \"{{oldestDate}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{BASE_URL}}:{{PORT}}/data/airTemp",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"port": "{{PORT}}",
+									"path": [
+										"data",
+										"airTemp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "light",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"        pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"1\",\n    \"plantId\":\"1\",\n    \"sensorType\":\"moisture\",\n    \"value\":\"{{lightSensorValue}}\",\n    \"recordDate\":  \"{{oldestDate}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{BASE_URL}}/data/light",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"data",
+										"light"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "humidity",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"        pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"1\",\n    \"plantId\":\"1\",\n    \"sensorType\":\"moisture\",\n    \"value\":\"{{humiditySensorValue}}\",\n    \"recordDate\":  \"{{oldestDate}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{BASE_URL}}/data/humidity",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"data",
+										"humidity"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "uploadSensorData_midDate",
+					"item": [
+						{
+							"name": "preCollectionScript",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"soilMoistureSensorValue\", _.random(1,100,true).toFixed(pm.environment.get(\"decimalPlaces\")));",
+											"pm.environment.set(\"soilTemperatureSensorValue\", _.random(1,100,true).toFixed(pm.environment.get(\"decimalPlaces\")));",
+											"pm.environment.set(\"airTemperatureSensorValue\", _.random(1,100,true).toFixed(pm.environment.get(\"decimalPlaces\")));",
+											"pm.environment.set(\"lightSensorValue\", _.random(1,100,true).toFixed(pm.environment.get(\"decimalPlaces\")));",
+											"pm.environment.set(\"humiditySensorValue\", _.random(1,100,true).toFixed(pm.environment.get(\"decimalPlaces\")));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{BASE_URL}}",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "soil_moisture",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"        pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"1\",\n    \"plantId\":\"1\",\n    \"sensorType\":\"moisture\",\n    \"value\": \"{{soilMoistureSensorValue}}\",\n    \"recordDate\": \"{{midDate}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{BASE_URL}}/data/moisture",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"data",
+										"moisture"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "soil_temperature",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"        pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"1\",\n    \"plantId\":\"1\",\n    \"sensorType\":\"moisture\",\n    \"value\": \"{{soilTemperatureSensorValue}}\",\n    \"recordDate\":  \"{{midDate}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{BASE_URL}}/data/soilTemp",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"data",
+										"soilTemp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "air_temperature",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"        pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"1\",\n    \"plantId\":\"1\",\n    \"sensorType\":\"moisture\",\n    \"value\":\"{{airTemperatureSensorValue}}\",\n    \"recordDate\": \"{{midDate}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{BASE_URL}}/data/airTemp",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"data",
+										"airTemp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "light",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"        pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"1\",\n    \"plantId\":\"1\",\n    \"sensorType\":\"moisture\",\n    \"value\":\"{{lightSensorValue}}\",\n    \"recordDate\":  \"{{midDate}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{BASE_URL}}/data/light",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"data",
+										"light"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "humidity",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"        pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"1\",\n    \"plantId\":\"1\",\n    \"sensorType\":\"moisture\",\n    \"value\":\"{{humiditySensorValue}}\",\n    \"recordDate\":  \"{{midDate}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{BASE_URL}}/data/humidity",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"data",
+										"humidity"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "uploadSensorData_currentDate",
+					"item": [
+						{
+							"name": "preCollectionScript",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set('currentDate', moment().format((\"YYYY-MM-DD hh:mm:ss\")));",
+											"",
+											"pm.environment.set(\"soilMoistureSensorValue\", _.random(1,100,true).toFixed(pm.environment.get(\"decimalPlaces\")));",
+											"pm.environment.set(\"soilTemperatureSensorValue\", _.random(1,100,true).toFixed(pm.environment.get(\"decimalPlaces\")));",
+											"pm.environment.set(\"airTemperatureSensorValue\", _.random(1,100,true).toFixed(pm.environment.get(\"decimalPlaces\")));",
+											"pm.environment.set(\"lightSensorValue\", _.random(1,100,true).toFixed(pm.environment.get(\"decimalPlaces\")));",
+											"pm.environment.set(\"humiditySensorValue\", _.random(1,100,true).toFixed(pm.environment.get(\"decimalPlaces\")));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{BASE_URL}}",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "soil_moisture",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"        pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"1\",\n    \"plantId\":\"1\",\n    \"sensorType\":\"moisture\",\n    \"value\": \"{{soilMoistureSensorValue}}\",\n    \"recordDate\": \"{{currentDate}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{BASE_URL}}/data/moisture",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"data",
+										"moisture"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "soil_temperature",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"        pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"1\",\n    \"plantId\":\"1\",\n    \"sensorType\":\"moisture\",\n    \"value\": \"{{soilTemperatureSensorValue}}\",\n    \"recordDate\":  \"{{currentDate}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{BASE_URL}}/data/soilTemp",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"data",
+										"soilTemp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "air_temperature",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"        pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"1\",\n    \"plantId\":\"1\",\n    \"sensorType\":\"moisture\",\n    \"value\":\"{{airTemperatureSensorValue}}\",\n    \"recordDate\": \"{{currentDate}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{BASE_URL}}/data/airTemp",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"data",
+										"airTemp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "light",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"        pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"1\",\n    \"plantId\":\"1\",\n    \"sensorType\":\"moisture\",\n    \"value\":\"{{lightSensorValue}}\",\n    \"recordDate\":  \"{{currentDate}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{BASE_URL}}/data/light",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"data",
+										"light"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "humidity",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"        pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\":\"1\",\n    \"plantId\":\"1\",\n    \"sensorType\":\"moisture\",\n    \"value\":\"{{humiditySensorValue}}\",\n    \"recordDate\":  \"{{currentDate}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{BASE_URL}}/data/humidity",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"data",
+										"humidity"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Get Latest Reading",
+					"item": [
+						{
+							"name": "soil_moisture",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"        pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify value from post is value returned\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(utils.round(pm.environment.get(\"soilMoistureSensorValue\"),3)).to.eql(jsonData.Val);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{BASE_URL}}/data/moisture",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"data",
+										"moisture"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "soil_temperature",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"        pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify value from post is value returned\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(utils.round(pm.environment.get(\"soilTemperatureSensorValue\"),3)).to.eql(jsonData.Val);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{BASE_URL}}/data/soilTemp",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"data",
+										"soilTemp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "air_temperature",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"        pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify value from post is value returned\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(utils.round(pm.environment.get(\"airTemperatureSensorValue\"),3)).to.eql(jsonData.Val); jsonData.Val",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{BASE_URL}}/data/airTemp",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"data",
+										"airTemp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "light",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"        pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify value from post is value returned\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(utils.round(pm.environment.get(\"lightSensorValue\"),3)).to.eql(jsonData.Val);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{BASE_URL}}/data/light",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"data",
+										"light"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "humidity",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"        pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Verify value from post is value returned\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(utils.round(pm.environment.get(\"humiditySensorValue\"),3)).to.eql(jsonData.Val);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{BASE_URL}}/data/humidity",
+									"protocol": "http",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"data",
+										"humidity"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"utils = {",
+									"    round: (number, decimalPlaces) => {",
+									"        const factorOfTen = Math.pow(10, decimalPlaces)",
+									"        return Math.round(number * factorOfTen) / factorOfTen",
+									"}",
+									"};"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"moment = require('moment');"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}
