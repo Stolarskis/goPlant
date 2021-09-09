@@ -32,12 +32,12 @@ func NewHTTP(m *goji.Mux) {
 
 func Start(configPath string, m *goji.Mux) {
 
-	_, svcConf, err := config.GetDbSettings(configPath)
+	svcConf, err := config.GetAppSettings()
 	if err != nil {
 		log.Crit(err.Error())
 	}
 
-	if (svcConf == config.SvcConfig{}) {
+	if (svcConf == config.AppConfig{}) {
 		log.Crit("Server settings have not been initialized.")
 		os.Exit(1)
 	}

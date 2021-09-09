@@ -14,19 +14,14 @@ import (
 	_ "github.com/lib/pq"
 )
 
-type migrationConfig struct {
-	dbName     string
-	configPath string
-}
-
 const sname = "goPlant"
 const isExists = "SELECT EXISTS(SELECT %s_name FROM information_schema.%s WHERE %s_name = '%s');"
 
 var TableNames = pgsql.TableNames
 
-func MigrateDb(config migrationConfig) {
+func MigrateDb() {
 
-	db, err := db.New(config.configPath)
+	db, err := db.New()
 	if err != nil {
 		log.Crit("Failed to create db connection: " + err.Error())
 		os.Exit(1)

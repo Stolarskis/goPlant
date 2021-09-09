@@ -5,10 +5,5 @@ import (
 )
 
 func main() {
-	mc := migrationConfig{
-		dbName:     "goPlant",
-		configPath: "",
-	}
-
-	MigrateDb(mc)
+	MigrateDb()
 }

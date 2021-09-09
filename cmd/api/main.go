@@ -14,7 +14,7 @@ import (
 
 func main() {
 
-	db, err := db.New("")
+	db, err := db.New()
 	if err != nil {
 		log.Error(err.Error())
 		os.Exit(1)

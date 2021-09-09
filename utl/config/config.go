@@ -2,9 +2,7 @@ package config
 
 import (
 	"errors"
-
-	log "github.com/inconshreveable/log15"
-	"github.com/spf13/viper"
+	"os"
 )
 
 type DbConfig struct {
@@ -12,60 +10,56 @@ type DbConfig struct {
 	Pass string
 	Name string
 	Host string
+	Port string
 }
 
-type SvcConfig struct {
+type AppConfig struct {
 	Host string
 	Port string
 }
 
-func GetDbSettings(configPath string) (DbConfig, SvcConfig, error) {
+func GetDbSettings() (DbConfig, error) {
 
-	path, err := getConfigPath(configPath)
+	db := DbConfig{}
+
+	db.Host = os.Getenv("DB_HOST")
+	db.Port = os.Getenv("DB_PORT")
+	db.Name = os.Getenv("DB_NAME")
+	db.User = os.Getenv("DB_USERNAME")
+	db.Pass = os.Getenv("DB_PASSWORD")
+
+	err := checkDbSettings(db)
 	if err != nil {
-		log.Warn(err.Error())
+		return db, err
 	}
 
-	setViperStg(path)
-
-	dbC, sC, err := readConf()
-
-	if err != nil {
-		return DbConfig{}, SvcConfig{}, err
-	}
-
-	return dbC, sC, nil
-
+	return db, nil
 }
 
-func setViperStg(env string) {
-	viper.AddConfigPath(env)
-	viper.SetConfigName("config")
-	viper.SetConfigType("yaml")
-}
-
-func readConf() (DbConfig, SvcConfig, error) {
-	dbC := DbConfig{}
-	sC := SvcConfig{}
-
-	viper.SetConfigName("config")
-	viper.SetConfigType("yaml")
-	err := viper.ReadInConfig()
+func GetAppSettings() (AppConfig, error) {
+	app := AppConfig{}
+	app.Host = os.Getenv("APP_HOST")
+	app.Port = os.Getenv("APP_PORT")
+	err := checkAppSettings(app)
 	if err != nil {
-		return dbC, sC, errors.New("Failed to read config file")
+		return app, err
 	}
 
-	viper.UnmarshalKey("db", &dbC)
-	viper.UnmarshalKey("server", &sC)
-
-	return dbC, sC, nil
+	return app, nil
 }
 
-func getConfigPath(cp string) (string, error) {
-
-	if cp == "" {
-		return "env/local/", errors.New("ConfigPath is empty, using default local config")
+func checkDbSettings(db DbConfig) error {
+	if db.Host == "" || db.Name == "" || db.Pass == "" || db.Port == "" || db.User == "" {
+		return errors.New("database setting(s) not found")
 	}
 
-	return cp, nil
+	return nil
+}
+
+func checkAppSettings(app AppConfig) error {
+	if app.Host == "" || app.Port == "" {
+		return errors.New("application setting(s) not found")
+	}
+
+	return nil
 }

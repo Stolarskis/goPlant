@@ -9,9 +9,9 @@ import (
 	"github.com/stolarskis/goPlant/utl/config"
 )
 
-func New(configPath string) (*sql.DB, error) {
+func New() (*sql.DB, error) {
 
-	dbC, _, err := config.GetDbSettings(configPath)
+	dbC, err := config.GetDbSettings()
 	if err != nil {
 		log.Crit(err.Error())
 	}
