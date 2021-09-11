@@ -43,11 +43,12 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{BASE_URL}}/data/humidity",
+									"raw": "http://{{BASE_URL}}:{{PORT}}/data/humidity",
 									"protocol": "http",
 									"host": [
 										"{{BASE_URL}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"data",
 										"humidity"
@@ -246,11 +247,12 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{BASE_URL}}/data/light",
+									"raw": "http://{{BASE_URL}}:{{PORT}}/data/light",
 									"protocol": "http",
 									"host": [
 										"{{BASE_URL}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"data",
 										"light"
@@ -287,11 +289,12 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{BASE_URL}}/data/humidity",
+									"raw": "http://{{BASE_URL}}:{{PORT}}/data/humidity",
 									"protocol": "http",
 									"host": [
 										"{{BASE_URL}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"data",
 										"humidity"
@@ -346,11 +349,12 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://{{BASE_URL}}",
+									"raw": "http://{{BASE_URL}}:{{PORT}}",
 									"protocol": "http",
 									"host": [
 										"{{BASE_URL}}"
-									]
+									],
+									"port": "{{PORT}}"
 								}
 							},
 							"response": []
@@ -383,11 +387,12 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{BASE_URL}}/data/moisture",
+									"raw": "http://{{BASE_URL}}:{{PORT}}/data/moisture",
 									"protocol": "http",
 									"host": [
 										"{{BASE_URL}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"data",
 										"moisture"
@@ -424,11 +429,12 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{BASE_URL}}/data/soilTemp",
+									"raw": "http://{{BASE_URL}}:{{PORT}}/data/soilTemp",
 									"protocol": "http",
 									"host": [
 										"{{BASE_URL}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"data",
 										"soilTemp"
@@ -465,11 +471,12 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{BASE_URL}}/data/airTemp",
+									"raw": "http://{{BASE_URL}}:{{PORT}}/data/airTemp",
 									"protocol": "http",
 									"host": [
 										"{{BASE_URL}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"data",
 										"airTemp"
@@ -506,11 +513,12 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{BASE_URL}}/data/light",
+									"raw": "http://{{BASE_URL}}:{{PORT}}/data/light",
 									"protocol": "http",
 									"host": [
 										"{{BASE_URL}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"data",
 										"light"
@@ -547,11 +555,12 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{BASE_URL}}/data/humidity",
+									"raw": "http://{{BASE_URL}}:{{PORT}}/data/humidity",
 									"protocol": "http",
 									"host": [
 										"{{BASE_URL}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"data",
 										"humidity"
@@ -608,11 +617,12 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://{{BASE_URL}}",
+									"raw": "http://{{BASE_URL}}:{{PORT}}",
 									"protocol": "http",
 									"host": [
 										"{{BASE_URL}}"
-									]
+									],
+									"port": "{{PORT}}"
 								}
 							},
 							"response": []
@@ -645,11 +655,12 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{BASE_URL}}/data/moisture",
+									"raw": "http://{{BASE_URL}}:{{PORT}}/data/moisture",
 									"protocol": "http",
 									"host": [
 										"{{BASE_URL}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"data",
 										"moisture"
@@ -686,11 +697,12 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{BASE_URL}}/data/soilTemp",
+									"raw": "http://{{BASE_URL}}:{{PORT}}/data/soilTemp",
 									"protocol": "http",
 									"host": [
 										"{{BASE_URL}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"data",
 										"soilTemp"
@@ -727,11 +739,12 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{BASE_URL}}/data/airTemp",
+									"raw": "http://{{BASE_URL}}:{{PORT}}/data/airTemp",
 									"protocol": "http",
 									"host": [
 										"{{BASE_URL}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"data",
 										"airTemp"
@@ -768,11 +781,12 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{BASE_URL}}/data/light",
+									"raw": "http://{{BASE_URL}}:{{PORT}}/data/light",
 									"protocol": "http",
 									"host": [
 										"{{BASE_URL}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"data",
 										"light"
@@ -809,11 +823,12 @@
 									}
 								},
 								"url": {
-									"raw": "http://{{BASE_URL}}/data/humidity",
+									"raw": "http://{{BASE_URL}}:{{PORT}}/data/humidity",
 									"protocol": "http",
 									"host": [
 										"{{BASE_URL}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"data",
 										"humidity"
@@ -871,11 +886,12 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://{{BASE_URL}}/data/moisture",
+									"raw": "http://{{BASE_URL}}:{{PORT}}/data/moisture",
 									"protocol": "http",
 									"host": [
 										"{{BASE_URL}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"data",
 										"moisture"
@@ -908,11 +924,12 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://{{BASE_URL}}/data/soilTemp",
+									"raw": "http://{{BASE_URL}}:{{PORT}}/data/soilTemp",
 									"protocol": "http",
 									"host": [
 										"{{BASE_URL}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"data",
 										"soilTemp"
@@ -945,11 +962,12 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://{{BASE_URL}}/data/airTemp",
+									"raw": "http://{{BASE_URL}}:{{PORT}}/data/airTemp",
 									"protocol": "http",
 									"host": [
 										"{{BASE_URL}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"data",
 										"airTemp"
@@ -982,11 +1000,12 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://{{BASE_URL}}/data/light",
+									"raw": "http://{{BASE_URL}}:{{PORT}}/data/light",
 									"protocol": "http",
 									"host": [
 										"{{BASE_URL}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"data",
 										"light"
@@ -1019,11 +1038,12 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://{{BASE_URL}}/data/humidity",
+									"raw": "http://{{BASE_URL}}:{{PORT}}/data/humidity",
 									"protocol": "http",
 									"host": [
 										"{{BASE_URL}}"
 									],
+									"port": "{{PORT}}",
 									"path": [
 										"data",
 										"humidity"
