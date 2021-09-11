@@ -13,9 +13,9 @@ metadata:
     "helm.sh/hook-delete-policy": hook-succeeded
 data:
   DB_HOST: {{ include "goplant.fullname" . }}-postgresql
-  DB_PORT: {{ .Values.db.port | quote}}
-  DB_NAME: {{ .Values.db.name | quote}}
-  DB_USERNAME: {{ .Values.db.user | quote}}
-  DB_PASSWORD: {{ .Values.db.pass | quote}}
+  DB_PORT: {{ .Values.postgresql.postgresqlPort | quote}}
+  DB_NAME: {{ .Values.postgresql.postgresqlDatabase | quote}}
+  DB_USERNAME: {{ .Values.postgresql.postgresqlUsername | quote}}
+  DB_PASSWORD: {{ .Values.postgresql.postgresqlPassword | quote}}
   APP_HOST: {{ .Values.app.host | quote}}
   APP_PORT: {{ .Values.app.port | quote}}

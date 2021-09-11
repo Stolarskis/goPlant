@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "goplant.fullname" . }}:{{ .Values.service.port }}']
+      args: ['{{ include "goplant.fullname" . }}:{{ .Values.app.service.port }}']
   restartPolicy: Never

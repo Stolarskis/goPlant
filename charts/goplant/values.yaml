@@ -30,25 +30,18 @@ podSecurityContext: {}
 
 securityContext: {}
 
-service:
-  type: NodePort 
-  port: 80
-
-db:
-  host: localhost
-  port: 5342
-  name: postgres
-  user: postgres
-  pass: mysecretpassword
-
 postgresql:
   postgresqlUsername: postgres
   postgresqlPassword: mysecretpassword 
   postgresqlDatabase: postgres
+  postgresqlPort: 5342
 
 app:
-  host: localhost
+  host: 0.0.0.0 
   port: 80
+  service:
+    type: NodePort
+
 
 migration:
   image: stolarskis/migration-job:0.0.2

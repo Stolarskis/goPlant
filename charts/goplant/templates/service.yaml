@@ -5,9 +5,9 @@ metadata:
   labels:
     {{- include "goplant.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ .Values.app.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
+    - port: {{ .Values.app.port }}
       targetPort: http
       protocol: TCP
       name: http
