@@ -5,11 +5,14 @@ import (
 	"errors"
 	"math"
 	"strconv"
+	"time"
 
 	log "github.com/inconshreveable/log15"
 
 	"github.com/stolarskis/goPlant/pkg/SensorData"
 )
+
+const tFormat = "02 Jan 06 15:04:01 MST"
 
 var DB *sql.DB
 
@@ -48,7 +51,7 @@ func UploadData(sd SensorData.SensorData) error {
 		"\n Sensor Type: " + sd.SensorType.ToString() +
 		"\n Sensor Value: " + v)
 
-	_, err = DB.Exec(uploadQueries[sd.SensorType], v, sd.RDate)
+	_, err = DB.Exec(uploadQueries[sd.SensorType], v, time.Now().Format(tFormat))
 	if err != nil {
 		return err
 	}
