@@ -15,7 +15,6 @@ type SensorData struct {
 	SensorId   string
 	PlantId    string
 	Value      string
-	RDate      string
 	SensorType SensorType
 }
 

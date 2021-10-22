@@ -1,0 +1,7 @@
+FROM golang:latest
+WORKDIR /home
+COPY . ./ 
+RUN go build ./cmd/migration/. 
+ENTRYPOINT ["./migration"]
+
+
