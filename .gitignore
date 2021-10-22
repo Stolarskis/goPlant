@@ -16,3 +16,7 @@
 
 .DS_STORE
 main
+
+# Helm
+charts/goplant/charts/
+
