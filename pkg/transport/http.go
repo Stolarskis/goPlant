@@ -50,7 +50,7 @@ func (h Handler) PostAirTempData(w http.ResponseWriter, r *http.Request) {
 		log.Error(err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
-		w.Write([]byte("Air temperature data uploaded successfully"))
+		w.Write([]byte("Error uploadin Air temperature data"))
 	} else {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Air temperature data uploaded successfully"))

@@ -20,7 +20,7 @@ Api currently runs in a docker container, running on a raspberry pi. In the proc
 
 ## Inspiration for GoPlant 
 ---
-There are many arduino based auto-planters out there. While following a guide, I realized that cable management for all these sensors was going to be a real issue. And what if I wanted to monitor multiple "gardens" that were far apart from each other. The easiest solution to this would be to store the data wirelessly and then perform actions based on that data.
+There are many arduino based auto-planters out there. While trying to implement my own, I realized that cable management for all these sensors was going to be a real issue. And what if I wanted to monitor multiple "gardens" that were far apart from each other. The easiest solution to this would be to store the data wirelessly and then perform actions based on that data.
 
 ## Main Components of Plant Monitoring System
 ---
