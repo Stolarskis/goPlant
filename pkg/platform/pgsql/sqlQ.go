@@ -1,24 +1,24 @@
 package pgsql
 
 const mAddData = `INSERT INTO  goplant.soilmoisture
-(value, createdate, recordtime)
-VALUES($1, CURRENT_DATE, $2);`
+(value, recordtime)
+VALUES($1, $2);`
 
 const sTAddData = `INSERT INTO  goplant.soiltemperature
-(value, createdate, recordtime)
-VALUES($1, CURRENT_DATE, $2);`
+(value, recordtime)
+VALUES($1, $2);`
 
 const aTAddData = `INSERT INTO  goplant.airtemperature
-(value, createdate, recordtime)
-VALUES($1, CURRENT_DATE, $2);`
+(value, recordtime)
+VALUES($1, $2);`
 
 const lAddData = `INSERT INTO  goplant.light
-(value, createdate, recordtime)
-VALUES($1, CURRENT_DATE, $2);`
+(value, recordtime)
+VALUES($1, $2);`
 
 const hAddData = `INSERT INTO  goplant.humidity
-(value, createdate, recordtime)
-VALUES($1, CURRENT_DATE, $2);`
+(value, recordtime)
+VALUES($1, $2);`
 
 const mGetLastVal = `SELECT value 
 FROM goplant.soilmoisture
